@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Sunny's Livery and IFE Hangar</title>
+
+  <!-- 1. ใส่ลิงก์รูปโลโก้ของคุณตรง href นี้เพื่อแสดงผลบนหัวแท็บเบราว์เซอร์ -->
+  <link rel="icon" type="image/png" href="https://via.placeholder.com/64/2e004b/f4e8d1?text=S">
+
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --base: #18191c;
+      --sidebar: #232428;
+      --line: #393b40;
+      --cream: #f4e8d1;
+      --muted: #aaaeb8;
+      --orchid: #2e004b;
+      --pink: #d43785;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: "DM Sans", sans-serif; color: #f7f6f3; background: var(--base); }
+    button, input, textarea, select { font: inherit; }
+    button { cursor: pointer; }
+    :focus-visible { outline: 2px solid var(--cream) !important; outline-offset: 3px; }
+
+    .shell { width: 100%; min-height: 100vh; display: flex; background: var(--base); }
+    .side { width: 250px; flex: none; background: var(--sidebar); border-right: 1px solid var(--line); padding: 25px 13px; display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; }
+    .brand { padding: 5px 13px 23px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 12px; }
+    .brand-mark { width: 32px; height: 32px; display: grid; place-items: center; border-radius: 9px; background: var(--orchid); color: var(--cream); font-weight: 800; flex: none; }
+    .nav-group { margin: 25px 13px 9px; color: #9da0a9; font-size: 10px; letter-spacing: .16em; font-weight: 800; }
+    .channel { width: 100%; border: 0; background: transparent; color: #c5c6cb; border-radius: 8px; text-align: left; padding: 10px 13px; display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; transition: background .18s, color .18s; }
+    .channel:hover { background: #303136; color: white; }
+    .channel.active { background: var(--orchid); color: var(--cream); }
+    .side-foot { margin-top: auto; padding: 17px 13px 0; border-top: 1px solid var(--line); font-size: 11px; color: #aeb0b7; }
+    .connection { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #a9b9a7; margin-right: 7px; }
+
+    .workspace { flex: 1; min-width: 0; padding: 28px clamp(18px, 4vw, 58px) 60px; }
+    .inner { max-width: 1240px; margin: auto; }
+    .toolbar { display: flex; gap: 13px; justify-content: space-between; align-items: center; }
+    .search { width: min(440px, 100%); background: var(--sidebar); border: 1px solid var(--line); color: white; border-radius: 9px; padding: 12px 15px; outline: none; }
+    .search::placeholder { color: #9fa1a8; }
+    .search:focus { border-color: #b8abc8; }
+
+    .wood { background-color: var(--cream); background-image: repeating-linear-gradient(96deg, transparent 0 10px, rgba(97, 75, 53, .035) 11px, transparent 13px, transparent 23px); color: var(--orchid); border: 1px solid #e5d8c0; }
+    .primary { padding: 11px 17px; border-radius: 9px; font-weight: 800; white-space: nowrap; transition: filter .2s; border: 0; }
+    .primary:hover { filter: brightness(.94); }
+    .secondary { border: 1px solid #55565c; background: #2b2d31; color: var(--cream); padding: 10px 15px; border-radius: 9px; }
+    .secondary:hover { background: #383a40; }
+
+    .intro { margin: 38px 0 23px; display: flex; justify-content: space-between; align-items: end; gap: 12px; }
+    .overline { font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: #b5a9bc; font-weight: 800; margin-bottom: 8px; }
+    h1 { line-height: 1.12; margin: 0; font-size: clamp(25px, 3vw, 38px); letter-spacing: -.045em; }
+    .sub { color: #aeb0b8; font-size: 13px; margin-top: 9px; }
+
+    .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-bottom: 24px; }
+    .stat { background: var(--sidebar); border: 1px solid var(--line); border-radius: 9px; padding: 13px 16px; }
+    .stat small { color: var(--muted); font-size: 11px; display: block; margin-bottom: 4px; }
+    .stat strong { font-size: 23px; line-height: 1; }
+
+    .feed { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px; }
+    .post { background: var(--sidebar); border: 1px solid var(--line); border-radius: 9px; padding: 16px; text-align: left; color: inherit; width: 100%; min-width: 0; transition: border-color .18s, background .18s; }
+    .post:hover { border-color: #92859f; background: #292a2f; }
+    .post-top { display: flex; justify-content: space-between; gap: 10px; font-size: 12px; }
+    .post-person { font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .post-time { color: #aeb0b8; white-space: nowrap; }
+    .cover { height: 155px; background: #2b2d31; border: 1px solid #424049; border-radius: 8px; overflow: hidden; display: grid; place-items: center; position: relative; color: #e5d8c0; margin: 13px 0; }
+    .cover img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
+    .post-title { font-size: 16px; font-weight: 800; line-height: 1.3; display: block; }
+    .snippet { font-size: 12px; color: #b9bbc2; line-height: 1.55; margin: 7px 0 13px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 36px; }
+    .badge { display: inline-block; border: 1px solid #51495a; background: #352c3c; border-radius: 6px; color: var(--cream); font-size: 11px; font-weight: 700; padding: 5px 8px; }
+    .post-bottom { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .empty { padding: 65px 22px; text-align: center; background: var(--sidebar); border: 1px dashed #494b50; border-radius: 9px; color: #b9bbc2; }
+
+    /* Rules View */
+    .rules { background: var(--sidebar); border: 1px solid var(--line); border-radius: 9px; padding: clamp(18px, 3vw, 38px); max-width: 960px; }
+    .rules-body { white-space: pre-wrap; line-height: 1.8; color: #dedee0; font-size: 13px; }
+
+    /* Fleet Manager Styling */
+    .fleet-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-top: 20px; }
+    .fleet-card { background: var(--sidebar); border: 1px solid var(--line); border-radius: 9px; padding: 18px; }
+    .fleet-card h3 { margin: 0 0 12px; font-size: 14px; color: var(--cream); border-bottom: 1px solid var(--line); padding-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+    .fleet-list { display: flex; flex-direction: column; gap: 10px; }
+    .fleet-item { display: flex; align-items: center; gap: 10px; font-size: 13px; cursor: pointer; user-select: none; }
+    .fleet-item input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--pink); cursor: pointer; }
+
+    /* Modals */
+    .overlay { position: fixed; inset: 0; z-index: 20; background: rgba(9, 9, 11, .82); display: grid; place-items: center; padding: 15px; }
+    .overlay[hidden] { display: none !important; }
+    .dialog { background: var(--sidebar); border: 1px solid #55545b; border-radius: 10px; width: min(100%, 720px); max-height: 92vh; overflow: auto; padding: 24px; box-shadow: 0 18px 55px #0006; }
+    .dialog-head { display: flex; justify-content: space-between; align-items: start; gap: 15px; margin-bottom: 22px; }
+    .dialog h2 { font-size: 23px; line-height: 1.2; margin: 0; }
+    .icon-close { border: 1px solid #515258; background: #303136; color: white; border-radius: 7px; width: 34px; height: 34px; flex: none; }
+
+    .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .field-wrap { margin-bottom: 16px; }
+    .field-wrap label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 7px; }
+    .field { width: 100%; background: var(--base); border: 1px solid #515258; border-radius: 8px; color: #fff; padding: 11px 12px; outline: none; }
+    .field:focus { border-color: #c6b7cf; }
+    .hint { color: #adb0ba; font-size: 11px; margin-top: 6px; line-height: 1.5; }
+    .preview { background: #2b2d31; border: 1px solid #414247; border-radius: 8px; padding: 12px 14px; margin-bottom: 17px; }
+    .preview strong { display: block; margin-top: 4px; }
+    .actions { display: flex; justify-content: flex-end; gap: 9px; flex-wrap: wrap; margin-top: 20px; }
+    .toast { position: fixed; z-index: 40; bottom: 20px; right: 20px; background: #33283b; border: 1px solid #8d759c; border-radius: 8px; padding: 12px 16px; color: #fff; max-width: min(380px, calc(100% - 40px)); font-size: 13px; }
+
+    @media (max-width: 850px) { .side { width: 205px; } .feed { grid-template-columns: 1fr; } }
+    @media (max-width: 650px) {
+      .shell { display: block; }
+      .side { height: auto; width: 100%; position: relative; padding: 12px; border-right: 0; border-bottom: 1px solid var(--line); }
+      .side nav { display: flex; overflow: auto; gap: 5px; padding: 10px 0 2px; }
+      .nav-group, .side-foot { display: none; }
+      .channel { width: auto; white-space: nowrap; flex: none; padding: 9px; }
+      .workspace { padding: 19px 15px 40px; }
+      .form-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body class="shell">
+
+  <!-- Sidebar -->
+  <aside class="side">
+    <header class="brand">
+      <div class="brand-mark">S</div>
+      <div>
+        <strong style="color: #fff; font-size: 16px;">Sunny's Hangar</strong>
+        <div style="color: var(--muted); font-size: 10px;">LIVERY & IFE DATABASE</div>
+      </div>
+    </header>
+    <nav>
+      <p class="nav-group">ORDER CHANNELS</p>
+      <button type="button" class="channel active" data-channel="livery-free">#livery-free</button>
+      <button type="button" class="channel" data-channel="livery-robux">#livery-robux</button>
+      <button type="button" class="channel" data-channel="ife-free">#ife-free</button>
+      <button type="button" class="channel" data-channel="ife-robux">#ife-robux</button>
+
+      <p class="nav-group">MANAGEMENT & INFO</p>
+      <button type="button" class="channel" data-channel="fleet-manager">✈️ #fleet-manager</button>
+      <button type="button" class="channel" data-channel="rules">#rules-and-regulations</button>
+    </nav>
+    <footer class="side-foot">
+      <span class="connection"></span>Solo Creator Hangar · Connected
+    </footer>
+  </aside>
+
+  <!-- Main Workspace -->
+  <main class="workspace">
+    <div class="inner">
+
+      <!-- Order Toolbar -->
+      <div class="toolbar" id="order-toolbar">
+        <input id="search" class="search" type="search" placeholder="Search orders in this channel...">
+        <button id="add-button" class="primary wood" type="button">+ Add Order</button>
+      </div>
+
+      <!-- Intro -->
+      <div class="intro">
+        <div>
+          <div class="overline">SUNNY'S LIVERY AND IFE HANGAR / DATABASE</div>
+          <h1 id="channel-title">#livery-free</h1>
+          <p id="channel-subtitle" class="sub">Oldest submissions first · FIFO</p>
+        </div>
+        <button id="add-aircraft-top-btn" class="secondary" style="display: none;" type="button">+ Add New Aircraft</button>
+      </div>
+
+      <!-- Section: Orders View -->
+      <section id="order-view">
+        <div class="stats">
+          <div class="stat"><small>VISIBLE ORDERS</small><strong id="visible-count">0</strong></div>
+          <div class="stat"><small>PENDING</small><strong id="pending-count">0</strong></div>
+          <div class="stat"><small>IN PROGRESS</small><strong id="progress-count">0</strong></div>
+          <div class="stat"><small>COMPLETED</small><strong id="completed-count">0</strong></div>
+        </div>
+        <div id="feed" class="feed"></div>
+        <div id="empty" class="empty" hidden>
+          <strong style="color: #fff;">Nothing in this channel yet.</strong>
+          <p class="sub">Try another search, or add the first order.</p>
+        </div>
+      </section>
+
+      <!-- Section: Fleet Manager View -->
+      <section id="fleet-view" hidden>
+        <p class="sub" style="margin-bottom: 20px;">
+          กาเลือกเครื่องบินที่มีในเกม Roblox Cabin Crew Simulator รุ่นที่ติ๊กถูกเท่านั้นจะไปปรากฏในฟอร์มสั่งทำ
+        </p>
+        <div id="fleet-container" class="fleet-grid"></div>
+      </section>
+
+      <!-- Section: Rules View -->
+      <section id="rules-view" class="rules" hidden>
+        <div class="rules-body">🚨 SUNNY'S HANGAR RULES & REGULATIONS
+
+📌 Note: This Hangar is operated solely by a Solo Creator. Managed by a solo creator, so progress may take time. Thank you for your patience and understanding.
+
+1. Language & Communication Standards
+- Full English or polite Thai only.
+- Slang abbreviations are strictly forbidden EXCEPT for "pls".
+
+2. Order Limits & Anti-Bypass
+- Exactly 1 active order per person at a time across all categories.
+- Alternate accounts or bypassing queue limits will result in cancellation.
+
+3. Queue Mechanics & Payment Integrity
+- Free slots are processed in FIFO order.
+- Paid slots require a minimum of 50 Robux.
+
+4. Reference Requirements
+- Select aircraft models officially in Roblox Cabin Crew Simulator.
+- Clear reference image links must be provided.
+
+5. No Rush & DM Policy (⛔ STRICT NO RUSH)
+- Do NOT DM to rush or check progress. The creator will DM you directly when it's your turn.</div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Modal: Add Order -->
+  <div id="add-overlay" class="overlay" hidden>
+    <section class="dialog" role="dialog">
+      <div class="dialog-head">
+        <div>
+          <div class="overline">NEW FORUM POST</div>
+          <h2>Submit an order</h2>
+        </div>
+        <button type="button" class="icon-close close-add">×</button>
+      </div>
+      <form id="order-form">
+        <div class="form-grid">
+          <div class="field-wrap">
+            <label for="username">Discord Username *</label>
+            <input id="username" class="field" required placeholder="e.g. sunnyaviator">
+          </div>
+          <div class="field-wrap">
+            <label for="keyword">Livery Search Keyword</label>
+            <input id="keyword" class="field" placeholder="Thai Airways 747 Retro">
+          </div>
+          <div class="field-wrap">
+            <label for="aircraft">Aircraft Model *</label>
+            <select id="aircraft" class="field" required>
+              <option value="">Select an aircraft</option>
+            </select>
+          </div>
+          <div class="field-wrap">
+            <label for="category">Order Channel</label>
+            <select id="category" class="field">
+              <option value="livery-free">#livery-free</option>
+              <option value="livery-robux">#livery-robux</option>
+              <option value="ife-free">#ife-free</option>
+              <option value="ife-robux">#ife-robux</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="preview">
+          <span class="overline">LIVE TITLE PREVIEW</span>
+          <strong id="title-preview">Select an aircraft to preview your title</strong>
+        </div>
+
+        <div id="robux-wrap" class="field-wrap" hidden>
+          <label for="robux">Robux Amount *</label>
+          <input id="robux" class="field" type="number" min="50" placeholder="50">
+          <p class="hint">Paid orders require at least 50 Robux.</p>
+        </div>
+
+        <div class="field-wrap">
+          <label for="description">Detailed Request Description *</label>
+          <textarea id="description" class="field" rows="4" required placeholder="Colors, hex codes, details..."></textarea>
+        </div>
+
+        <div class="field-wrap">
+          <label for="urls">Reference Image Links</label>
+          <textarea id="urls" class="field" rows="3" placeholder="https://imgur.com/example.png"></textarea>
+          <p class="hint">Paste photo links (Discord / Imgur). The first image becomes the cover.</p>
+        </div>
+
+        <div class="actions">
+          <button class="secondary close-add" type="button">Cancel</button>
+          <button class="primary wood" type="submit">Submit Order</button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <!-- Modal: Add Aircraft Custom -->
+  <div id="add-aircraft-overlay" class="overlay" hidden>
+    <section class="dialog" style="max-width: 450px;">
+      <div class="dialog-head">
+        <div>
+          <div class="overline">FLEET MANAGEMENT</div>
+          <h2>Add New Aircraft</h2>
+        </div>
+        <button type="button" class="icon-close close-aircraft">×</button>
+      </div>
+      <form id="aircraft-form">
+        <div class="field-wrap">
+          <label for="new-plane-name">Aircraft Model Name *</label>
+          <input id="new-plane-name" class="field" required placeholder="e.g. Concorde 2.0 or B777-9">
+        </div>
+        <div class="field-wrap">
+          <label for="new-plane-cat">Category</label>
+          <select id="new-plane-cat" class="field">
+            <option value="Narrowbody">Single-Aisle Narrowbody</option>
+            <option value="Widebody">Widebody / Twin-Aisle</option>
+            <option value="Regional">Regional / Turbo Prop</option>
+            <option value="Large">Very Large Aircraft</option>
+          </select>
+        </div>
+        <div class="actions">
+          <button class="secondary close-aircraft" type="button">Cancel</button>
+          <button class="primary wood" type="submit">Save Aircraft</button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast" hidden></div>
+
+  <!-- JavaScript App Logic -->
+  <script>
+    const $ = id => document.getElementById(id);
+
+    // Default Aircraft Fleet Data
+    const defaultFleet = [
+      { id: '1', name: 'ATR 72', category: 'Regional', active: true },
+      { id: '2', name: 'Embraer E190', category: 'Regional', active: true },
+      { id: '3', name: 'Airbus A320neo', category: 'Narrowbody', active: true },
+      { id: '4', name: 'Airbus A321neo', category: 'Narrowbody', active: true },
+      { id: '5', name: 'Boeing 737-800', category: 'Narrowbody', active: true },
+      { id: '6', name: 'Boeing 737 MAX 8', category: 'Narrowbody', active: true },
+      { id: '7', name: 'Airbus A330-300', category: 'Widebody', active: true },
+      { id: '8', name: 'Airbus A350-900', category: 'Widebody', active: true },
+      { id: '9', name: 'Boeing 777-300ER', category: 'Widebody', active: true },
+      { id: '10', name: 'Boeing 787-9 Dreamliner', category: 'Widebody', active: true },
+      { id: '11', name: 'Airbus A380-800', category: 'Large', active: true },
+      { id: '12', name: 'Boeing 747-400', category: 'Large', active: true }
+    ];
+
+    let fleet = JSON.parse(localStorage.getItem('sunnys_fleet')) || defaultFleet;
+    let currentChannel = 'livery-free';
+
+    // UI Elements
+    const navButtons = document.querySelectorAll('.channel');
+    const orderView = $('order-view');
+    const fleetView = $('fleet-view');
+    const rulesView = $('rules-view');
+    const orderToolbar = $('order-toolbar');
+    const addAircraftTopBtn = $('add-aircraft-top-btn');
+
+    // Handle Navigation Switch
+    navButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        navButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentChannel = btn.dataset.channel;
+
+        $('channel-title').innerText = `#${currentChannel}`;
+
+        // Hide all views first
+        orderView.hidden = true;
+        fleetView.hidden = true;
+        rulesView.hidden = true;
+        orderToolbar.hidden = true;
+        addAircraftTopBtn.style.display = 'none';
+
+        if (currentChannel === 'fleet-manager') {
+          fleetView.hidden = false;
+          addAircraftTopBtn.style.display = 'block';
+          $('channel-subtitle').innerText = 'Manage available planes in Cabin Crew Simulator';
+          renderFleetManager();
+        } else if (currentChannel === 'rules') {
+          rulesView.hidden = false;
+          $('channel-subtitle').innerText = 'Rules & Terms of Service';
+        } else {
+          orderView.hidden = false;
+          orderToolbar.hidden = false;
+          $('channel-subtitle').innerText = 'Oldest submissions first · FIFO';
+        }
+      });
+    });
+
+    // Populate Dropdown for Order Form
+    function populateAircraftDropdown() {
+      const select = $('aircraft');
+      select.innerHTML = '<option value="">Select an aircraft</option>';
+      
+      const activePlanes = fleet.filter(f => f.active);
+      activePlanes.forEach(plane => {
+        const opt = document.createElement('option');
+        opt.value = plane.name;
+        opt.textContent = plane.name;
+        select.appendChild(opt);
+      });
+    }
+
+    // Render Fleet Manager Checklist
+    function renderFleetManager() {
+      const container = $('fleet-container');
+      container.innerHTML = '';
+
+      const categories = ['Narrowbody', 'Widebody', 'Regional', 'Large'];
+
+      categories.forEach(cat => {
+        const catPlanes = fleet.filter(p => p.category === cat);
+        if (catPlanes.length === 0) return;
+
+        const card = document.createElement('div');
+        card.className = 'fleet-card';
+        card.innerHTML = `<h3>${cat} Models</h3><div class="fleet-list"></div>`;
+        const listContainer = card.querySelector('.fleet-list');
+
+        catPlanes.forEach(plane => {
+          const item = document.createElement('label');
+          item.className = 'fleet-item';
+          item.innerHTML = `
+            <input type="checkbox" ${plane.active ? 'checked' : ''} data-id="${plane.id}">
+            <span>${plane.name}</span>
+          `;
+
+          item.querySelector('input').addEventListener('change', (e) => {
+            plane.active = e.target.checked;
+            saveFleet();
+          });
+
+          listContainer.appendChild(item);
+        });
+
+        container.appendChild(card);
+      });
+    }
+
+    function saveFleet() {
+      localStorage.setItem('sunnys_fleet', JSON.stringify(fleet));
+      populateAircraftDropdown();
+    }
+
+    // Modal Control: Add Order
+    $('add-button').onclick = () => { populateAircraftDropdown();$('add-overlay').hidden = false; };
+    document.querySelectorAll('.close-add').forEach(b => b.onclick = () => $('add-overlay').hidden = true);
+
+    // Modal Control: Add Aircraft
+    addAircraftTopBtn.onclick = () => $('add-aircraft-overlay').hidden = false;
+    document.querySelectorAll('.close-aircraft').forEach(b => b.onclick = () => $('add-aircraft-overlay').hidden = true);
+
+    // Handle Adding New Aircraft
+    $('aircraft-form').onsubmit = (e) => {
+      e.preventDefault();
+      const name = $('new-plane-name').value.trim();
+      const category = $('new-plane-cat').value;
+
+      if (name) {
+        fleet.push({ id: Date.now().toString(), name, category, active: true });
+        saveFleet();
+        renderFleetManager();
+        $('new-plane-name').value = '';$('add-aircraft-overlay').hidden = true;
+        showToast('New aircraft added successfully!');
+      }
+    };
+
+    function showToast(msg) {
+      const t = $('toast');
+      t.innerText = msg;
+      t.hidden = false;
+      setTimeout(() => { t.hidden = true; }, 3000);
+    }
+
+    // Initial Load
+    populateAircraftDropdown();
+  </script>
+</body>
+</html>
